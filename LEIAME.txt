@@ -1,0 +1,22 @@
+O jogo 'Seega' é um jogo de estratégia em que dois jogadores devem "comer" as peças adversárias no tabuleiro. Pode soar como um jogo da damas qualquer, mas o que diferencia o Seega do jogo de damas é a disposição das peças no tabuleiro e o modo de captura de peças adversárias. Leia o arquivo 'LEIAME.txt' para saber mais a respeito das regras deste jogo.
+
+Metas
+=====
+
+- Classes controladoras
+  - Mouse
+  - Click
+  - Drag & Drop
+- Classes lógicas
+  - Jogo
+  - Tabuleiro
+  - Placar
+  - Jogador
+  - Peça
+- Classes de regras
+  - Início do Jogo
+  - Captura
+  - Término do Jogo
+- Classes de visualização
+  - GTabuleiro
+  - GPeça
