@@ -2,6 +2,9 @@
 
 #include <GL/glut.h>
 
+#include "game.h"
+#include "board.h"
+
 #include "graphicscontroller.h"
 #include "gboard.h"
 #include "mousecontroller.h"
@@ -30,6 +33,12 @@ void click(int button, int state, int x, int y)
 		mcontroller_ptr->click_cb(button, state, x, y);
 }
 
+void drag(int x, int y)
+{
+	if (mcontroller_ptr)
+		mcontroller_ptr->drag_cb(x, y);
+}
+
 void move(int x, int y)
 {
 	if (mcontroller_ptr)
@@ -50,12 +59,9 @@ int main(int argc, char** argv)
 
 	//mcontroller_ptr->setDebug(true);
 
-	auto board_ptr = std::make_shared<Board>(5);
-
-	(*board_ptr)[0][0] = Cell::RED;
-	(*board_ptr)[2][3] = Cell::YELLOW;
-
-	auto gboard_ptr = std::make_shared<GBoard>(board_ptr);
+	std::default_random_engine rng;
+	auto game_ptr = std::make_shared<Game>(5, rng);
+	auto gboard_ptr = std::make_shared<GBoard>(game_ptr);
 	gcontroller_ptr->addGraphics(gboard_ptr);
 	mcontroller_ptr->addListener(gboard_ptr);
 
@@ -66,7 +72,8 @@ int main(int argc, char** argv)
 	glutCreateWindow("Seega");
 	glutDisplayFunc(display);
 	glutMouseFunc(click);
-	glutMotionFunc(move);
+	glutMotionFunc(drag);
+	glutPassiveMotionFunc(move);
 	gluOrtho2D(
 		- WINDOW_MARGIN,
 		(double) WINDOW_PROJ_WIDTH + WINDOW_MARGIN,
