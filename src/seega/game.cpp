@@ -15,12 +15,18 @@ Game::Game(int dim, bool ai, std::default_random_engine& rng) :
 	m_ai(ai),
 	m_rng(rng)
 {
+	std::fill(m_last_move, m_last_move + 4, 0);
 	m_ai_turn = getEnemy(m_turn);
 }
 
 Cell Game::getTurn() const
 {
 	return m_turn;
+}
+
+Cell Game::getAiColor() const
+{
+	return m_ai_turn;
 }
 
 std::shared_ptr<Board const> Game::getBoard() const
@@ -43,6 +49,11 @@ bool Game::canMovePieces() const
 	return m_stage == Game::Stage::PLAYING && !isAiTurn();
 }
 
+int const* Game::getLastMove() const
+{
+	return m_last_move;
+}
+
 bool Game::canPlacePieces() const
 {
 	return m_stage == Game::Stage::PLACING_PIECES && !isAiTurn();
@@ -51,6 +62,11 @@ bool Game::canPlacePieces() const
 bool Game::isAiTurn() const
 {
 	return m_ai && m_turn == m_ai_turn && !isOver();
+}
+
+std::vector<std::pair<int, int>> const& Game::getLastRemoved() const
+{
+	return m_last_removed;
 }
 
 bool Game::isCentralCell(int i, int j) const
@@ -208,6 +224,8 @@ bool Game::movePiece(int i_ini, int j_ini, int i_fin, int j_fin)
 bool Game::movePiecePrivate(int i_ini, int j_ini, int i_fin, int j_fin)
 {
 	const int dim = m_board->getDimension();
+
+	// Check validity of move
 	if (i_ini < 0 || i_ini >= dim || j_ini < 0 || j_ini >= dim ||
 		i_fin < 0 || i_fin >= dim || j_fin < 0 || j_fin >= dim)
 		return false; // Invalid indices
@@ -219,6 +237,14 @@ bool Game::movePiecePrivate(int i_ini, int j_ini, int i_fin, int j_fin)
 	Cell& cell_fin = (*m_board)[i_fin][j_fin];
 	if (cell_fin != Cell::EMPTY)
 		return false; // Tried to move piece to not empty cell
+
+	// Save last mvoe
+	m_last_move[0] = i_ini;
+	m_last_move[1] = j_ini;
+	m_last_move[2] = i_fin;
+	m_last_move[3] = j_fin;
+
+	// Process move
 	std::swap(cell_ini, cell_fin);
 	processMove(i_fin, j_fin);
 	if (m_red_pieces == 0) {
@@ -257,38 +283,45 @@ void Game::processMove(int i, int j)
 {
 	const int dim = m_board->getDimension();
 	Cell cell = (*m_board)[i][j];
+
+	// Clear last removed
+	m_last_removed.clear();
+
 	// North
 	if (i >= 2 && !isCentralCell(i - 1, j)) {
 		Cell& north_cell = (*m_board)[(std::size_t) i - 1][j];
 		Cell north_north_cell = (*m_board)[(std::size_t) i - 2][j];
 		if (north_north_cell == cell && north_cell == getEnemy(cell))
-			eliminateCell(north_cell);
+			eliminateCell(i - 1, j);
 	}
 	// South
 	if (i <= dim - 3 && !isCentralCell(i + 1, j)) {
 		Cell& south_cell = (*m_board)[(std::size_t) i + 1][j];
 		Cell south_south_cell = (*m_board)[(std::size_t) i + 2][j];
 		if (south_south_cell == cell && south_cell == getEnemy(cell))
-			eliminateCell(south_cell);
+			eliminateCell(i + 1, j);
 	}
 	// West
 	if (j >= 2 && !isCentralCell(i, j - 1)) {
 		Cell& west_cell = (*m_board)[i][(std::size_t) j - 1];
 		Cell west_west_cell = (*m_board)[i][(std::size_t) j - 2];
 		if (west_west_cell == cell && west_cell == getEnemy(cell))
-			eliminateCell(west_cell);
+			eliminateCell(i, j - 1);
 	}
 	// East
 	if (j <= dim - 3 && !isCentralCell(i, j + 1)) {
 		Cell& east_cell = (*m_board)[i][(std::size_t) j + 1];
 		Cell east_east_cell = (*m_board)[i][(std::size_t) j + 2];
 		if (east_east_cell == cell && east_cell == getEnemy(cell))
-			eliminateCell(east_cell);
+			eliminateCell(i, j + 1);
 	}
 }
 
-void Game::eliminateCell(Cell& cell)
+void Game::eliminateCell(int i, int j)
 {
+	m_last_removed.push_back(std::make_pair(i, j));
+
+	auto& cell = (*m_board)[i][j];
 	switch (cell) {
 	case Cell::YELLOW:
 		--m_yellow_pieces;
@@ -321,6 +354,9 @@ void Game::addPlacedPieces()
 	else
 		++m_red_pieces;
 	const int dim = m_board->getDimension();
-	if ((m_red_pieces + m_yellow_pieces) == ((dim * dim) - 1))
+	if ((m_red_pieces + m_yellow_pieces) == ((dim * dim) - 1)) {
 		m_stage = Game::Stage::PLAYING;
+		if (!hasPossibleMove(m_turn))
+			nextTurn();
+	}
 }

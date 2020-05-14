@@ -20,6 +20,7 @@ public:
 	std::shared_ptr<Board const> getBoard() const;
 
 	Cell getTurn() const;
+	Cell getAiColor() const;
 	bool isAiTurn() const;
 
 	bool letAiPlay();
@@ -32,6 +33,9 @@ public:
 
 	bool placePiece(int i, int j);
 	bool movePiece(int i_ini, int j_ini, int i_fin, int j_fin);
+
+	int const* getLastMove() const;
+	std::vector<std::pair<int, int>> const& getLastRemoved() const;
 private:
 	bool placePiecePrivate(int i, int j);
 	bool movePiecePrivate(int i_ini, int j_ini, int i_fin, int j_fin);
@@ -40,7 +44,7 @@ private:
 	void addPlacedPieces();
 	void processMove(int i, int j);
 	Cell getEnemy(Cell me) const;
-	void eliminateCell(Cell& cell);
+	void eliminateCell(int i, int j);
 	bool isCentralCell(int i, int j) const;
 	bool hasPossibleMove(Cell player) const;
 
@@ -52,6 +56,8 @@ private:
 	int m_remaining_pieces_to_place;
 	std::default_random_engine m_rng;
 	bool m_ai;
+	std::vector<std::pair<int, int>> m_last_removed;
+	int m_last_move[4];
 	Stage m_stage;
 	Cell m_turn;
 	Cell m_ai_turn;

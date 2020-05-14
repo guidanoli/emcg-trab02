@@ -1,5 +1,8 @@
 #include "gboard.h"
 
+#include <thread>
+#include <chrono>
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -8,10 +11,8 @@
 #include "game.h"
 #include "board.h"
 
-void GBoard::config()
-{
-	// nothing
-}
+
+using namespace std::chrono_literals;
 
 void GBoard::plot()
 {
@@ -34,6 +35,8 @@ void GBoard::plot()
 		glEnd();
 	}
 	/* Cells */
+	int const* last_move = m_game->getLastMove();
+	auto const& last_removed = m_game->getLastRemoved();
 	const float r = div * m_disc_fill / 2;
 	for (int i = 0; i < dim; ++i)
 		for (int j = 0; j < dim; ++j) {
@@ -41,12 +44,27 @@ void GBoard::plot()
 				m_held_piece_indices[0] == i &&
 				m_held_piece_indices[1] == j)
 				continue; // skip held piece
+			if (m_ai_is_animating &&
+				last_move[2] == i &&
+				last_move[3] == j)
+				continue; // skip animating piece
+			if (m_ai_is_animating) {
+				bool was_last_removed = false;
+				for (auto const& [rem_i, rem_j] : last_removed)
+					if (rem_i == i && rem_j == j) {
+						was_last_removed = true;
+						break;
+					}
+				if (was_last_removed)
+					continue; // skip removed pieces
+			}
 			if (setPlayerColor((*m_board)[i][j])) {
 				float c[2];
 				getCellCenter(i, j, c);
 				plotCircle(c[0], c[1], r);
 			}
 		}
+	/* Special cells */
 	if (m_is_holding_piece) {
 		float c[2];
 		int i = m_held_piece_indices[0];
@@ -57,10 +75,50 @@ void GBoard::plot()
 		if (setPlayerColor((*m_board)[i][j]))
 			plotCircle(c[0], c[1], r);
 	}
-	if (m_game->getStage() == Game::Stage::PLACING_PIECES) {
+	if (m_game->getStage() == Game::Stage::PLACING_PIECES &&
+		!m_game->isAiTurn()) {
 		Cell piece_color = m_game->getTurn();
 		if (setPlayerColor(piece_color))
 			plotCircle(m_placing_piece_pos[0], m_placing_piece_pos[1], r);
+	}
+	if (m_ai_is_animating) {
+		auto now = std::chrono::steady_clock::now();
+		unsigned long long dt =
+			std::chrono::duration_cast<std::chrono::milliseconds>
+			(now - m_ai_animation_start).count();
+		float progress;
+		if (dt >= m_ai_animation_duration) {
+			progress = 1.f;
+			m_ai_is_animating = false;
+		} else {
+			progress = (float) dt / (float) m_ai_animation_duration;
+		}
+		Cell piece_color = m_game->getTurn();
+		if (progress != 1.f) {
+			setPlayerColor(piece_color);
+			for (auto const& [rem_i, rem_j] : last_removed) {
+				float c[2];
+				getCellCenter(rem_i, rem_j, c);
+				plotCircle(c[0], c[1], r);
+			}
+		}
+		float last_positions[4];
+		getCellCenter(last_move[0], last_move[1], last_positions);
+		getCellCenter(last_move[2], last_move[3], last_positions + 2);
+		float curr_x = last_positions[0] * (1.f - progress) + last_positions[2] * progress;
+		float curr_y = last_positions[1] * (1.f - progress) + last_positions[3] * progress;
+		setPlayerColor(m_game->getAiColor());
+		plotCircle(curr_x, curr_y, r);
+		if (progress < 1.f)
+			glutPostRedisplay();
+	}
+	if (m_game->isAiTurn()) {
+		m_game->letAiPlay();
+		if (m_ai_animate && m_game->getStage() == Game::Stage::PLAYING) {
+			m_ai_is_animating = true;
+			m_ai_animation_start = std::chrono::steady_clock::now();
+		}
+		glutPostRedisplay();
 	}
 }
 
@@ -174,8 +232,6 @@ void GBoard::click_cb(int button, int state, float x, float y)
 			}
 			m_is_holding_piece = false;
 		}
-		while (m_game->isAiTurn())
-			m_game->letAiPlay();
 		glutPostRedisplay();
 	}
 }

@@ -36,9 +36,9 @@ std::string get_file_contents(std::string const& filename)
 		in.seekg(0, std::ios::beg);
 		in.read(&contents[0], contents.size());
 		in.close();
-		return(contents);
+		return contents;
 	}
-	throw(errno);
+	return std::string();
 }
 
 void display()
@@ -72,6 +72,8 @@ struct options_t
 {
 	int board_size;
 	bool ai_adversary;
+	bool ai_animate;
+	unsigned long ai_animation_duration;
 };
 
 int main(int argc, char** argv)
@@ -79,7 +81,9 @@ int main(int argc, char** argv)
 	options_t options;
 
 	const std::string regras_path = std::string(DATAPATH) + "/regras.txt";
-	const std::string regras_str = get_file_contents(regras_path);
+	std::string regras_str = get_file_contents(regras_path);
+	if (regras_str.empty())
+		regras_str = get_file_contents("regras.txt"); // In the same dir
 
 	arg::build_parser(argc, argv, options, regras_str.c_str())
 
@@ -88,8 +92,16 @@ int main(int argc, char** argv)
 			arg::def(5))
 		
 		.bind("ia", &options_t::ai_adversary,
-			arg::doc("Jogar contra adversario robo"),
+			arg::doc("Jogar contra adversario robo (0 = contra outro jogador)"),
 			arg::def(true))
+
+		.bind("ia-animado", &options_t::ai_animate,
+			arg::doc("Criar delay nas acoes do robo (0 = automatico)"),
+			arg::def(true))
+
+		.bind("velocidade-animacao", &options_t::ai_animation_duration,
+			arg::doc("Velocidade da animacao em milisegundos"),
+			arg::def(500))
 
 		.build();
 
@@ -110,12 +122,17 @@ int main(int argc, char** argv)
 		options.board_size,
 		options.ai_adversary,
 		rng);
-	auto gboard_ptr = std::make_shared<GBoard>(game_ptr);
+	auto gboard_ptr = std::make_shared<GBoard>(
+		game_ptr,
+		options.ai_animate,
+		options.ai_animation_duration);
 	gcontroller_ptr->addGraphics(gboard_ptr);
 	mcontroller_ptr->addListener(gboard_ptr);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutInitWindowPosition(10, 10);
 	glutCreateWindow("Seega");

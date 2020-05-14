@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <chrono>
 
 #include "mousecontroller.h"
 #include "igraphics.h"
@@ -11,14 +12,18 @@ enum class Cell;
 class GBoard : public IGraphics, public IMouseListener
 {
 public:
-	GBoard(std::shared_ptr<Game> game) :
+	GBoard(std::shared_ptr<Game> game, bool ai_animate = false,
+		unsigned long long ai_animation_duration = 0) :
 		m_game(game),
 		m_point_size(5.f),
 		m_disc_points(32),
 		m_disc_fill(0.8f),
 		m_x(0), m_y(0), m_l(100),
 		m_r(0.2f), m_g(0.2f), m_b(1.f),
-		m_is_holding_piece(false)
+		m_is_holding_piece(false),
+		m_ai_animate(ai_animate),
+		m_ai_is_animating(false),
+		m_ai_animation_duration(ai_animation_duration)
 	{
 		std::fill(m_held_piece_indices, m_held_piece_indices + 2, 0);
 		std::fill(m_held_piece_pos_ini, m_held_piece_pos_ini + 2, 0.f);
@@ -35,7 +40,6 @@ public:
 	void setBoardColor(float r, float g, float b) { m_r = r; m_g = g; m_b = b; }
 
 	// IGraphics
-	void config() override;
 	void plot() override;
 
 	// IMouseListener
@@ -52,12 +56,17 @@ private:
 private:
 	std::shared_ptr<Game> m_game;
 
+	// ai
+	bool m_ai_animate;
+	bool m_ai_is_animating;
+	unsigned long long m_ai_animation_duration; // em ms
+	std::chrono::steady_clock::time_point m_ai_animation_start;
+
 	// mouse controller
 	bool m_is_holding_piece;
 	int m_held_piece_indices[2];
 	float m_held_piece_pos_ini[2];
 	float m_held_piece_pos_fin[2];
-
 	float m_placing_piece_pos[2];
 
 	// plotting parameters
