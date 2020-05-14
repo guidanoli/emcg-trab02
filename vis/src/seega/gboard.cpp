@@ -174,6 +174,8 @@ void GBoard::click_cb(int button, int state, float x, float y)
 			}
 			m_is_holding_piece = false;
 		}
+		while (m_game->isAiTurn())
+			m_game->letAiPlay();
 		glutPostRedisplay();
 	}
 }

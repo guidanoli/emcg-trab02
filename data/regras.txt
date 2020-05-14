@@ -1,0 +1,98 @@
+Seega
+=====
+Este e um jogo de estrategia para duas pessoas, disputando geralmente em um
+tabuleiro de 25 casas, com cada jogador utilizando 12 pecas, diferenciadas
+pela cor (amarelo e vermelho). Pode-se jogar o Seega tambem em um tabuleiro
+de 49 casas, com cada jogador utilizando 24 pecas, ou ainda em um tabuleiro
+de 81 casas e 40 pecas para cada jogador.
+O objetivo dos jogadores e capturar todas as pecas do adversario.
+
+O jogo
+------
+Uma partida de Seega divide-se em duas fases distintas: uma fase de
+posicionamento das pecas no tabuleiro e outra fase, que e o jogo propriamente
+dito.
+Antes de ser iniciado o jogo, deve-se decidir, por sorteio, quem jogara
+primeiro, dando inicio a primeira fase da partida.
+
+Primeira fase
+-------------
+Decidida a ordem do jogo, o primeiro jogador inicia a fase de posicionamento,
+colocando 2 de duas pecas em quaisquer casas do tabuleiro, com excecao apenas
+da casa central. Em seguida, seu adversario faz o mesmo, e assim
+sucessivamente - sempre cada um colocando 2 pecas no tabuleiro em sua vez
+- ate que todas as suas casas estejam ocupadas, com excecao somente da casa
+central. 
+primeira fase nao e permitido fazer capturas.
+O segundo jogador, que coloca as duas ultimas pecas no tabuleiro, da inicio a
+segunda fase do jogo.
+
+Segunda fase
+------------
+Nesta fase, os jogadores movimentam uma - e apenas uma - de suas pecas a cada
+jogada, sempre para uma casa adjacente (vizinha) que esteja vaga.
+As pecas sao movimentada ssempre nos sentidos horizontal ou vertical. Como a
+casa central e a unica que permanece vaga ao se iniciar a segunda fase do
+jogo, a primeira peca movimentada tem que ser necessariamente deslocada para
+essa casa.
+Os jogadores movimentam suas pecas procurando capturar as pecas adversarias.
+Nesse jogo, as capturas sao feitas pelo chamado sistema de custodia, isto e,
+um jogador captura uma peca adversaria, quando consegue coloca-la entre duas
+de suas pecas, no sentido horizontal ou no sentido vertical, como aparece na
+Figura 1. Ao fazer isso, o jogador retira do tabuleiro a peca adversaria
+capturada.
+
+_______________
+|   |   |   | /
+|   |   |   | \
+|___|___|___|__\
+|   |   |   |  /
+| X | O | X | /
+|___|___|___|_\
+
+Figura 1
+~~~~~~~~
+
+Com um unico movimento de uma de suas pecas, um jogador pode capturar varias
+pecas adversarias simultaneamente, como mostra o exemplo da Figura 2. Neste
+caso, ao se movimentar no sentido indicado pela seta, a peca branca captura
+as 3 pecas adversarias.
+
+____________________
+|   |   |   |   |   |
+|   | O |   |   |   |
+|___|___|___|___|___|
+|   |   |   |   |   |
+|   | X |   |   |   |
+|___|___|___|___|___|
+|   |   |   |   |   |
+| O ->  | X | O |   |
+|___|___|___|___|___|
+|   |   |   |   |   |
+|   | X |   |   |   |
+|___|___|___|___|___|
+|   |   |   |   |   |
+|   | O |   |   |   |
+|___|___|___|___|___|
+
+Figura 2
+~~~~~~~~
+
+Quando esta ocupando a casa central do tabuleiro uma peca nao pode ser
+capturada, mesmo que se encontre entre duas pecas adversarias. Um jogador pode
+colocar uma peca entre duas pessoas adversarias, deixando-a em posicao de
+"custodia", sem correr o risco de que ela seja capturada, pois a situacao
+de captura ocorre somente quando a posicao de "custodia" se forma a partir
+do movimento de uma peca do jogador que vai realizar a captura.
+Quando um jogador nao dispuser de nenhuma casa livre para onde possa mover
+qualquer uma de suas pecas, seu adversario continuara jogando ate que o
+jogador tenha condicao para movimentar uma de suas pecas.
+Uma das taticas basicas neste jogo e a que consiste em se construir barreiras,
+de modo a impedir que o adversario possa cercar suas pecas e, ao mesmo tempo,
+facilitar a movimentacao de suas proprias pessoas. Portanto, a vitoria depende
+em grande parte da maneira como o jogador tenha condicao para movimentar uma
+de suas pecas.
+Vence o jogo quem consegue capturar todas as pecas do tabuleiro. E, no caso
+dos dois jogadores conseguirem construir barreiras de penetracao impossivel,
+ganha aquele que possuir mais pecas no tabuleiro. Se ambos tiverem o mesmo
+numero de pecas, a partida sera considerada empatada.

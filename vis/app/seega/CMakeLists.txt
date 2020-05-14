@@ -1,1 +1,1 @@
-target_link_libraries(seegavisapp seegavislib)
+target_link_libraries(seegavisapp seegavislib argparserlib)

@@ -20,6 +20,8 @@ endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+add_definitions(-DDATAPATH="${CMAKE_CURRENT_LIST_DIR}/data")
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 add_subdirectory("src")
