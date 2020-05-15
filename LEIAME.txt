@@ -1,4 +1,8 @@
-O jogo 'Seega' é um jogo de estratégia em que dois jogadores devem "comer" as peças adversárias no tabuleiro. Pode soar como um jogo da damas qualquer, mas o que diferencia o Seega do jogo de damas é a disposição das peças no tabuleiro e o modo de captura de peças adversárias. Leia o arquivo 'LEIAME.txt' para saber mais a respeito das regras deste jogo.
+O jogo 'Seega' é um jogo de estratégia em que dois jogadores devem "comer" as
+peças adversárias no tabuleiro. Pode soar como um jogo da damas qualquer, mas o
+que diferencia o Seega do jogo de damas é a disposição das peças no tabuleiro e
+o modo de captura de peças adversárias. Leia o arquivo 'data/regras.txt' para
+saber mais a respeito das regras deste jogo.
 
 Build
 =====
@@ -19,23 +23,24 @@ $ cmake .. -DOPENGL_LIBRARY_DIR="C:\Program Files (x86)\Windows Kits\10\Lib\10.0
 
 $ cmake --build .
 
-Metas
-=====
+Execução
+========
 
-- Classes controladoras
-  - Mouse
-  - Click
-  - Drag & Drop
-- Classes lógicas
-  - Jogo
-  - Tabuleiro
-  - Placar
-  - Jogador
-  - Peça
-- Classes de regras
-  - Início do Jogo
-  - Captura
-  - Término do Jogo
-- Classes de visualização
-  - GTabuleiro
-  - GPeça
+O programa aceita parâmetros de linha de comando também. Para saber quais
+parâmetros são aceitos, rode o executável com o parâmetro --help, assim:
+
+$ seegavisapp --help
+
+E aparecerão as regras do jogo e os parâmetros válidos em linha de comando.
+Exemplo:
+
+- Rodar jogo com parâmetros padrões
+$ seegavisapp
+
+- Rodar jogo sem inteligência artificial
+$ seegavisapp --ai=0
+
+- Rodar jogo com tabuleiro 7x7
+$ seegavisapp --tamanho=7
+
+Dentre outros...
