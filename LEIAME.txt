@@ -37,8 +37,8 @@ Exemplo:
 - Rodar jogo com parâmetros padrões
 $ seegavisapp
 
-- Rodar jogo sem inteligência artificial
-$ seegavisapp --ai=0
+- Rodar jogo sem inteligência artificial (para 2 jogadores)
+$ seegavisapp --ia=0
 
 - Rodar jogo com tabuleiro 7x7
 $ seegavisapp --tamanho=7

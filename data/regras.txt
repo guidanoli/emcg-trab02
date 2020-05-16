@@ -18,7 +18,7 @@ primeiro, dando inicio a primeira fase da partida.
 Primeira fase
 -------------
 Decidida a ordem do jogo, o primeiro jogador inicia a fase de posicionamento,
-colocando 2 de duas pecas em quaisquer casas do tabuleiro, com excecao apenas
+colocando 2 de suas pecas em quaisquer casas do tabuleiro, com excecao apenas
 da casa central. Em seguida, seu adversario faz o mesmo, e assim
 sucessivamente - sempre cada um colocando 2 pecas no tabuleiro em sua vez
 - ate que todas as suas casas estejam ocupadas, com excecao somente da casa
@@ -31,7 +31,7 @@ Segunda fase
 ------------
 Nesta fase, os jogadores movimentam uma - e apenas uma - de suas pecas a cada
 jogada, sempre para uma casa adjacente (vizinha) que esteja vaga.
-As pecas sao movimentada ssempre nos sentidos horizontal ou vertical. Como a
+As pecas sao movimentadas sempre nos sentidos horizontal ou vertical. Como a
 casa central e a unica que permanece vaga ao se iniciar a segunda fase do
 jogo, a primeira peca movimentada tem que ser necessariamente deslocada para
 essa casa.
@@ -80,7 +80,7 @@ Figura 2
 
 Quando esta ocupando a casa central do tabuleiro uma peca nao pode ser
 capturada, mesmo que se encontre entre duas pecas adversarias. Um jogador pode
-colocar uma peca entre duas pessoas adversarias, deixando-a em posicao de
+colocar uma peca entre duas pecas adversarias, deixando-a em posicao de
 "custodia", sem correr o risco de que ela seja capturada, pois a situacao
 de captura ocorre somente quando a posicao de "custodia" se forma a partir
 do movimento de uma peca do jogador que vai realizar a captura.
@@ -89,7 +89,7 @@ qualquer uma de suas pecas, seu adversario continuara jogando ate que o
 jogador tenha condicao para movimentar uma de suas pecas.
 Uma das taticas basicas neste jogo e a que consiste em se construir barreiras,
 de modo a impedir que o adversario possa cercar suas pecas e, ao mesmo tempo,
-facilitar a movimentacao de suas proprias pessoas. Portanto, a vitoria depende
+facilitar a movimentacao de suas proprias pecas. Portanto, a vitoria depende
 em grande parte da maneira como o jogador tenha condicao para movimentar uma
 de suas pecas.
 Vence o jogo quem consegue capturar todas as pecas do tabuleiro. E, no caso
