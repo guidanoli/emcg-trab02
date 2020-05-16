@@ -17,7 +17,7 @@ $ cmake ..
 3 - Se o CMake não consegue encontrar as bibliotecas gráficas (freeglut e OpenGL), adicione
     os parâmetros de debug com os caminhos respectivos, por exemplo:
 
-$ cmake .. -DOPENGL_LIBRARY_DIR="C:\Program Files (x86)\Windows Kits\10\Lib\10.0.18362.0\um\x64"
+$ cmake .. -DOPENGL_LIBRARY_DIR="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\lib\x64"
 
 4 - Agora, pode construir os objetos e aplicações:
 
